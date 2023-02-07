@@ -15,11 +15,15 @@ class MainWindow(QMainWindow):
 
         self.setGeometry(0, 0, 600, 6000)
         self.setWindowTitle('Mars Rover')
-        self.setFixedSize(500, 400)
+        self.setFixedSize(1000, 800)
 
         pushButton = QtWidgets.QPushButton(parent=self, text='Fetch')
         pushButton.move(250, 250)
         pushButton.clicked.connect(self.fetch_value)
+        pushButton=QtWidgets.QPushButton(parent=self, text='Next')
+        pushButton.move()
+        pushButton.clicked.connect(self.)
+
 
         label2 = QtWidgets.QLabel(self)
         label2.setText("Select Camera:")
@@ -38,8 +42,14 @@ class MainWindow(QMainWindow):
         self.dateEdit.setGeometry(QRect(42, 150, 200, 21))
         self.dateEdit.setDisplayFormat("yyyy-MM-dd")
         self.dateEdit.setDate(QtCore.QDate.currentDate())
-        self.image_label = QLabel(self)
-        self.image_label.setGeometry(QRect(250, 20, 200, 200))
+      #   self.image_label1 = QLabel(self)
+      #   self.image_label1.setGeometry(QRect(250, 20, 200, 200))
+      #   self.image_label2 = QLabel(self)
+      #   self.image_label2.setGeometry(QRect(450, 20, 200, 200))
+      self.image_labels = []
+        for i in range(100):
+            self.image_labels.append(QLabel(self))
+            self.image_labels[i].setGeometry(QRect(250, 20 + (i * 200), 200, 200))
         
    def fetch_value(self):
       selected_camera = self.comboBox2.currentText()
@@ -59,8 +69,13 @@ class MainWindow(QMainWindow):
          r = requests.get(img)
          with open(f"image{item}.JPG", 'wb') as f:
                 f.write(r.content)
+         
          self.pixmap = QPixmap(f"image{item}.JPG")
-         self.image_label.setPixmap(self.pixmap)
+         if item == 0:
+            self.image_label1.setPixmap(self.pixmap)
+         if item == 1:
+            self.image_label2.setPixmap(self.pixmap)
+
 app = QtWidgets.QApplication(sys.argv)
 window = MainWindow()
 window.show()

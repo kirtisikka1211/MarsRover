@@ -8,7 +8,7 @@ import requests
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import QSize, QRect,Qt
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QMainWindow, QLabel, QGridLayout, QWidget, QComboBox,QScrollArea,QVBoxLayout,QLineEdit,QPushButton,QTextEdit
+from PyQt6.QtWidgets import QMainWindow, QLabel, QGridLayout, QWidget, QComboBox,QScrollArea,QVBoxLayout,QLineEdit,QPushButton,QTextEdit, QMessageBox
 
 class MainWindow(QMainWindow):
    def __init__(self, *args, **kwargs):
@@ -46,6 +46,11 @@ class MainWindow(QMainWindow):
         self.comboBox2.move(250, 300)
         self.comboBox2.setGeometry(QRect(40, 40, 200, 31))
         self.comboBox2.addItems([" ", "fhaz", "rhaz", "mast", "chemcam", "mahli", "mardi", "navcam"])
+        self.dateEdit = QtWidgets.QDateEdit(parent=self)
+        self.dateEdit.move(250, 400)
+        self.dateEdit.setGeometry(QRect(42, 150, 200, 21))
+        self.dateEdit.setDisplayFormat("yyyy-MM-dd")
+        self.dateEdit.setDate(QtCore.QDate.currentDate())
 
         label3 = QtWidgets.QLabel(text="Select Date:", parent=self)
         label3.move(50, 120)
@@ -78,6 +83,8 @@ class MainWindow(QMainWindow):
         self.sendButton.clicked.connect(self.sendEmail)
         self.sendButton.resize(200, 32)
         self.sendButton.move(50, 600)
+        self.label = QLabel(self)
+        self.label.setGeometry(QRect(400, 20, 550, 700))
  
         # button = QPushButton("Get Text")
         # button.clicked.connect(self.get)
@@ -151,7 +158,7 @@ class MainWindow(QMainWindow):
     self.i-=1
     self.label.show()
    def sendEmail(self):
-    mail = self.emailLine.text()
+    mail = self.emailLine.text().split(',')
     subject = self.subjectLine.text()
     body = self.bodyText.toPlainText()
     folder_path = 'IMAGE'
@@ -161,10 +168,13 @@ class MainWindow(QMainWindow):
         if image_file.endswith(".JPG"):
             images.append(os.path.join(folder_path, image_file))
 
-    print("To:", mail)
+    print("To:", ', '.join(mail))
     print("Subject:", subject)
     print("Message Body:", body)
-    ezgmail.send(mail, subject, body, attachments=images)
+    for recipient in mail:
+        ezgmail.send(recipient, subject, body, attachments=images)
+        print(f'Email sent to {recipient}')
+        QMessageBox.information(self, "Sent", "The email was sent successfully.")
         # ezgmail.send("kirtisikka972@gmail.com","Subject","hdouwhcnwercfr")
 
      

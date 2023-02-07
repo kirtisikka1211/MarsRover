@@ -175,6 +175,7 @@ class MainWindow(QMainWindow):
         ezgmail.send(recipient, subject, body, attachments=images)
         print(f'Email sent to {recipient}')
         QMessageBox.information(self, "Sent", "The email was sent successfully.")
+        shutil.rmtree('IMAGE')
         # ezgmail.send("kirtisikka972@gmail.com","Subject","hdouwhcnwercfr")
 
      

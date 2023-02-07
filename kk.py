@@ -15,7 +15,7 @@ class MainWindow(QMainWindow):
 
         self.setGeometry(0, 0, 600, 6000)
         self.setWindowTitle('Mars Rover')
-      #   self.setFixedSize(1000, 800)
+        self.setFixedSize(1000, 800)
 
         pushButton = QtWidgets.QPushButton(parent=self, text='Fetch')
         pushButton.move(250, 250)
@@ -47,6 +47,7 @@ class MainWindow(QMainWindow):
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area_widget_contents = QtWidgets.QWidget()
         self.scroll_area.setWidget(self.scroll_area_widget_contents)
+        
         self.image_labels = []
       #   self.image_label1 = QLabel(self)
       #   self.image_label1.setGeometry(QRect(250, 20, 200, 200))
@@ -63,41 +64,21 @@ class MainWindow(QMainWindow):
     print(selected_date)
     API_KEY = 'IVq7C5Zg7JhdBNrepSwUsYnjznjHfxSq0PsgQMzT'
     response = requests.get(f"https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date={selected_date}&api_key={API_KEY}&page=1&camera={selected_camera}")
-    a = response.json()
-    print(a)
-    image_list = []
-    for i in a['photos']:
-      img = i['img_src']
-      image_list.append(img)
+    image_list = response.json()['photos']
+    print(image_list)
     folder_name = f"{selected_camera}"
     if not os.path.exists(folder_name):
         os.makedirs(folder_name)
-    for item in range(len(image_list)):
-      img = image_list[item]
-      r = requests.get(img)
-      with open(f"{folder_name}/image{item}.JPG", 'wb') as f:
+
+    y_pos = 20
+    for i, image in enumerate(image_list):
+        img = image['img_src']
+        r = requests.get(img)
+        with open(f"{folder_name}/image{i}.JPG", 'wb') as f:
             f.write(r.content)
-      image = QPixmap(f"{folder_name}/image{item}.JPG")
-      label = QLabel(self.scroll_area_widget_contents)
-      label.setPixmap(image)
-      label.move(20, 20 + item * 150)
-      self.image_labels.append(label)
-      for label in self.image_labels:
-         label.show()
-      
-             
-                
-
-
-         
-         # self.pixmap = QPixmap(f"image{item}.JPG")
-         # if item == 0:
-         #    self.image_label1.setPixmap(self.pixmap)
-         # if item == 1:
-         #    self.image_label2.setPixmap(self.pixmap)
-
-app = QtWidgets.QApplication(sys.argv)
-window = MainWindow()
-window.show()
-sys.exit(app.exec())
-
+        image = QPixmap(f"{folder_name}/image{i}.JPG")
+        label = QLabel(self.scroll_area_widget_contents)
+        label.setPixmap(image)
+        label.move(20, y_pos)
+        y_pos += image.height() + 20
+        self.image_labels.append(label)

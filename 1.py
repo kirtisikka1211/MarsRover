@@ -1,13 +1,11 @@
 import sys
 import requests
-from PyQt6 import QtWidgets, QtGui, QtCore
-from urllib import request
-import os, shutil
-import requests
-from PyQt6 import QtWidgets
-from PyQt6.QtCore import QSize, QRect
+from PyQt6 import QtWidgets, QtCore,QPixmap
+import os
+from PyQt6.QtCore import QRect,QLabel,QScrollArea
+from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QMainWindow, QLabel, QGridLayout, QWidget, QComboBox,QScrollArea
+
 
 class MainWindow(QMainWindow):
    def __init__(self, *args, **kwargs):
@@ -15,7 +13,7 @@ class MainWindow(QMainWindow):
 
         self.setGeometry(0, 0, 600, 6000)
         self.setWindowTitle('Mars Rover')
-      #   self.setFixedSize(1000, 800)
+        self.setFixedSize(1000, 800)
 
         pushButton = QtWidgets.QPushButton(parent=self, text='Fetch')
         pushButton.move(250, 250)
@@ -47,16 +45,23 @@ class MainWindow(QMainWindow):
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area_widget_contents = QtWidgets.QWidget()
         self.scroll_area.setWidget(self.scroll_area_widget_contents)
+        
         self.image_labels = []
+
+
+        # self.image_labels = []
+        # for i in range(100):
+        #     self.image_labels.append(QLabel(self))
+        #     self.image_labels[i].setGeometry(QRect(250, 20 + (i * 200), 200, 200))
+        
+        
+        
+        
       #   self.image_label1 = QLabel(self)
       #   self.image_label1.setGeometry(QRect(250, 20, 200, 200))
       #   self.image_label2 = QLabel(self)
       #   self.image_label2.setGeometry(QRect(450, 20, 200, 200))
-      # self.image_labels = []
-      #   for i in range(100):
-      #       self.image_labels.append(QLabel(self))
-      #       self.image_labels[i].setGeometry(QRect(250, 20 + (i * 200), 200, 200))
-        
+      # 
    def fetch_value(self):
     selected_camera = self.comboBox2.currentText()
     selected_date = self.dateEdit.date().toPyDate()
@@ -68,7 +73,9 @@ class MainWindow(QMainWindow):
     image_list = []
     for i in a['photos']:
       img = i['img_src']
+      print(img)
       image_list.append(img)
+      
     folder_name = f"{selected_camera}"
     if not os.path.exists(folder_name):
         os.makedirs(folder_name)
@@ -82,11 +89,11 @@ class MainWindow(QMainWindow):
       label.setPixmap(image)
       label.move(20, 20 + item * 150)
       self.image_labels.append(label)
-      for label in self.image_labels:
-         label.show()
+      self.scroll_area.setWidget(label)
       
-             
-                
+  
+
+            
 
 
          
@@ -100,4 +107,3 @@ app = QtWidgets.QApplication(sys.argv)
 window = MainWindow()
 window.show()
 sys.exit(app.exec())
-

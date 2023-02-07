@@ -84,13 +84,13 @@ class MainWindow(QMainWindow):
       r = requests.get(img)
       with open(f"{folder_name}/image{item}.JPG", 'wb') as f:
             f.write(r.content)
-      image = QPixmap(f"{folder_name}/image{item}.JPG")
-      label = QLabel(self.scroll_area_widget_contents)
-      label.setPixmap(image)
-      label.move(20, 20 + item * 150)
-      self.image_labels.append(label)
-      self.scroll_area.setWidget(label)
-      
+      # image = QPixmap(f"{folder_name}/image{item}.JPG")
+      # label = QLabel(self.scroll_area_widget_contents)
+      # label.setPixmap(image)
+      # label.move(20, 20 + item * 150)
+      # self.image_labels.append(label)
+      # self.scroll_area.setWidget(label)
+
   
 
             

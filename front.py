@@ -5,14 +5,14 @@ from urllib import request
 import os, shutil
 import requests
 from PyQt6 import QtWidgets
-from PyQt6.QtCore import QSize, QRect
+from PyQt6.QtCore import QSize, QRect,Qt
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QMainWindow, QLabel, QGridLayout, QWidget, QComboBox,QScrollArea
+from PyQt6.QtWidgets import QMainWindow, QLabel, QGridLayout, QWidget, QComboBox,QScrollArea,QVBoxLayout,QLineEdit,QPushButton,QTextEdit
 
 class MainWindow(QMainWindow):
    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.i=0
+        self.i=1
 
         self.setGeometry(0, 0, 600, 6000)
         self.setWindowTitle('Mars Rover')
@@ -26,7 +26,11 @@ class MainWindow(QMainWindow):
         pushButton.clicked.connect(self.next_value)
         pushButton=QtWidgets.QPushButton(parent=self, text='Previous')
         pushButton.move(350,550)
-        pushButton.clicked.connect(self.next_value)
+        pushButton.clicked.connect(self.previous_value)
+    
+        # pushButton=QtWidgets.QPushButton(parent=self, text='Previous')
+        # pushButton.move(350,650)
+        # pushButton.clicked.connect(self.get)
         # label = QLabel(self)
         # label.setText("Select Camera:")
         # label.move(50, 20)
@@ -51,6 +55,53 @@ class MainWindow(QMainWindow):
         self.dateEdit.setDate(QtCore.QDate.currentDate())
         self.label = QLabel(self)
         self.label.setGeometry(QRect(400, 20, 550, 700))
+        self.label4 = QLabel(self)
+        self.label4.setGeometry(QRect(400, 20, 550, 700))
+        self.nameLabel = QLabel(self)
+        self.nameLabel.setText('Email: ')
+        self.text_edit = QTextEdit(self)
+        self.text_edit.move(50, 300)
+        self.text_edit.resize(200, 30)
+        self.nameLabel.move(50, 270)
+        
+        self.nameLabel = QLabel(self)
+        self.nameLabel.setText('Subject:')
+        self.line = QLineEdit(self)
+        self.line.move(50, 350)
+        self.line.resize(200, 32)
+        self.nameLabel.move(50, 325)
+
+        self.nameLabel = QLabel(self)
+        self.nameLabel.setText('Body: ')
+        self.text_edit = QTextEdit(self)
+
+        self.text_edit.move(50, 450)
+        self.text_edit.resize(200, 30)
+        self.nameLabel.move(50, 430)
+        self.nameLabel = QLabel(self)
+
+        pybutton = QPushButton('OK', self)
+        pybutton.clicked.connect(self.clickMethod)
+        pybutton.resize(200,32)
+        pybutton.move(50, 600)  
+ 
+        # button = QPushButton("Get Text")
+        # button.clicked.connect(self.get)
+        # layout.addWidget(button)
+ 
+        # button = QPushButton("Clear Text")
+        # button.clicked.connect(self.input.clear)
+        # layout.addWidget(button)
+ 
+ 
+        # button = QPushButton("Get Text")
+        # button.clicked.connect(self.get)
+        # layout.addWidget(button)
+ 
+        # button = QPushButton("Clear Text")
+        # button.clicked.connect(self.input.clear)
+        # layout.addWidget(button)
+
         # self.label.setWidgetResizable(True)
     
         # self.label.setWidget(self.scroll_area_widget_contents)
@@ -84,6 +135,8 @@ class MainWindow(QMainWindow):
       r = requests.get(img)
       with open(f"{folder_name}/image{item}.JPG", 'wb') as f:
             f.write(r.content)
+            # self.pixmap=QPixmap(f'IMAGE/image0.JPG')
+            # self.label4.setPixmap(self.pixmap)
       # image = QPixmap(f"{folder_name}/image{item}.JPG")
       # label = QLabel(self.scroll_area_widget_contents)
       # label.setPixmap(image)
@@ -96,11 +149,20 @@ class MainWindow(QMainWindow):
     self.label.setPixmap(self.pixmap)
     self.i+=1
     self.label.show()
+    
    def previous_value(self):
     self.pixmap=QPixmap(f'IMAGE/image{self.i}.JPG')
+    print(self.pixmap)
     self.label.setPixmap(self.pixmap)
     self.i-=1
     self.label.show()
+   def clickMethod(self):
+    mail=self.line.text()
+    body=self.text_edit.toPlainText()
+    subject=self.line_2.text()
+    print(mail)
+    print(body)
+    print(subject)
 
              
                 

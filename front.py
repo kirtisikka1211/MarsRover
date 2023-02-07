@@ -1,4 +1,5 @@
 import sys
+import ezgmail
 import requests
 from PyQt6 import QtWidgets, QtGui, QtCore
 from urllib import request
@@ -12,10 +13,11 @@ from PyQt6.QtWidgets import QMainWindow, QLabel, QGridLayout, QWidget, QComboBox
 class MainWindow(QMainWindow):
    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.i=1
+        self.i=0
 
         self.setGeometry(0, 0, 600, 6000)
         self.setWindowTitle('Mars Rover')
+        self.total_images=0
       #   self.setFixedSize(1000, 800)
 
         pushButton = QtWidgets.QPushButton(parent=self, text='Fetch')
@@ -48,42 +50,34 @@ class MainWindow(QMainWindow):
         label3 = QtWidgets.QLabel(text="Select Date:", parent=self)
         label3.move(50, 120)
 
-        self.dateEdit = QtWidgets.QDateEdit(parent=self)
-        self.dateEdit.move(250, 400)
-        self.dateEdit.setGeometry(QRect(42, 150, 200, 21))
-        self.dateEdit.setDisplayFormat("yyyy-MM-dd")
-        self.dateEdit.setDate(QtCore.QDate.currentDate())
-        self.label = QLabel(self)
-        self.label.setGeometry(QRect(400, 20, 550, 700))
-        self.label4 = QLabel(self)
-        self.label4.setGeometry(QRect(400, 20, 550, 700))
-        self.nameLabel = QLabel(self)
-        self.nameLabel.setText('Email: ')
-        self.text_edit = QTextEdit(self)
-        self.text_edit.move(50, 300)
-        self.text_edit.resize(200, 30)
-        self.nameLabel.move(50, 270)
-        
-        self.nameLabel = QLabel(self)
-        self.nameLabel.setText('Subject:')
-        self.line = QLineEdit(self)
-        self.line.move(50, 350)
-        self.line.resize(200, 32)
-        self.nameLabel.move(50, 325)
+        self.setGeometry(0, 0, 600, 6000)
+        self.setWindowTitle('Mars Rover')
 
-        self.nameLabel = QLabel(self)
-        self.nameLabel.setText('Body: ')
-        self.text_edit = QTextEdit(self)
+        self.emailLabel = QLabel(self)
+        self.emailLabel.setText('Email: ')
+        self.emailLine = QLineEdit(self)
+        self.emailLine.move(50, 300)
+        self.emailLine.resize(200, 30)
+        self.emailLabel.move(50, 270)
 
-        self.text_edit.move(50, 450)
-        self.text_edit.resize(200, 30)
-        self.nameLabel.move(50, 430)
-        self.nameLabel = QLabel(self)
+        self.subjectLabel = QLabel(self)
+        self.subjectLabel.setText('Subject:')
+        self.subjectLine = QLineEdit(self)
+        self.subjectLine.move(50, 350)
+        self.subjectLine.resize(200, 32)
+        self.subjectLabel.move(50, 325)
 
-        pybutton = QPushButton('OK', self)
-        pybutton.clicked.connect(self.clickMethod)
-        pybutton.resize(200,32)
-        pybutton.move(50, 600)  
+        self.bodyLabel = QLabel(self)
+        self.bodyLabel.setText('Body: ')
+        self.bodyText = QTextEdit(self)
+        self.bodyText.move(50, 450)
+        self.bodyText.resize(200, 30)
+        self.bodyLabel.move(50, 430)
+
+        self.sendButton = QPushButton('OK', self)
+        self.sendButton.clicked.connect(self.sendEmail)
+        self.sendButton.resize(200, 32)
+        self.sendButton.move(50, 600)
  
         # button = QPushButton("Get Text")
         # button.clicked.connect(self.get)
@@ -156,13 +150,24 @@ class MainWindow(QMainWindow):
     self.label.setPixmap(self.pixmap)
     self.i-=1
     self.label.show()
-   def clickMethod(self):
-    mail=self.line.text()
-    body=self.text_edit.toPlainText()
-    subject=self.line_2.text()
-    print(mail)
-    print(body)
-    print(subject)
+   def sendEmail(self):
+    mail = self.emailLine.text()
+    subject = self.subjectLine.text()
+    body = self.bodyText.toPlainText()
+    folder_path = 'IMAGE'
+
+    images = []
+    for image_file in os.listdir(folder_path):
+        if image_file.endswith(".JPG"):
+            images.append(os.path.join(folder_path, image_file))
+
+    print("To:", mail)
+    print("Subject:", subject)
+    print("Message Body:", body)
+    ezgmail.send(mail, subject, body, attachments=images)
+        # ezgmail.send("kirtisikka972@gmail.com","Subject","hdouwhcnwercfr")
+
+     
 
              
                 

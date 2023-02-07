@@ -79,7 +79,7 @@ class MainWindow(QMainWindow):
         self.bodyText.resize(200, 30)
         self.bodyLabel.move(50, 430)
 
-        self.sendButton = QPushButton('OK', self)
+        self.sendButton = QPushButton('SEND', self)
         self.sendButton.clicked.connect(self.sendEmail)
         self.sendButton.resize(200, 32)
         self.sendButton.move(50, 600)

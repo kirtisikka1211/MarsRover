@@ -13,7 +13,7 @@ This app fetches image from the Curiosity Rover and displays images, Also you ha
 
 
 ## 💫 Usage 
-- Open the application using python main.py or python3 main.py
+- Open the application using python marsrover.py or python3 marsrover.py
 - You can choose the camera and date, a calender will appear for you to choose from.
 - You can see the image in the application. You can navigate using next and previous button
 - You can share the images to many of your friends  by just one click!  the send email button !. 📨

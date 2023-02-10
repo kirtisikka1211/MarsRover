@@ -10,49 +10,77 @@ from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QMainWindow, QLabel, QWidget,QLineEdit,QPushButton,QTextEdit, QMessageBox
 
 class MainWindow(QMainWindow):
-   def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.i=0
-        self.w = None 
-        self.setGeometry(0, 0, 600, 6000)
-        self.setWindowTitle('Mars Rover')
-        self.total_images=0
-        pushButton = QtWidgets.QPushButton(parent=self, text='Fetch')
-        pushButton.move(250, 250)
-        pushButton.clicked.connect(self.fetch_value)
-        pushButton=QtWidgets.QPushButton(parent=self, text='Next')
-        pushButton.move(650,350)
-        pushButton.clicked.connect(self.next_value)
-        pushButton=QtWidgets.QPushButton(parent=self, text='Previous')
-        pushButton.move(550,350)
-        pushButton.clicked.connect(self.previous_value)
-        pushButton=QtWidgets.QPushButton(parent=self, text='Send Email')
-        pushButton.move(550,550)
-        pushButton.clicked.connect(self.show_new_window)
-        label2 = QtWidgets.QLabel(self)
-        label2.setText("Select Camera:")
-        label2.move(50, 20)
-        self.comboBox2 = QtWidgets.QComboBox(self)
-        self.comboBox2.move(250, 300)
-        self.comboBox2.setGeometry(QRect(40, 40, 200, 31))
-        self.comboBox2.addItems([" ", "fhaz", "rhaz", "mast", "chemcam", "mahli", "mardi", "navcam"])
-        self.dateEdit = QtWidgets.QDateEdit(parent=self)
-        self.dateEdit.move(250, 400)
-        self.dateEdit.setGeometry(QRect(42, 150, 200, 21))
-        self.dateEdit.setDisplayFormat("yyyy-MM-dd")
-        self.dateEdit.setDate(QtCore.QDate.currentDate())
-        label3 = QtWidgets.QLabel(text="Select Date:", parent=self)
-        label3.move(50, 120)
-        self.setGeometry(0, 0, 600, 6000)
-        self.setWindowTitle('Mars Rover')
-        self.label = QLabel(self)
-        self.label.setGeometry(QRect(400, 20, 550, 700))
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.i=0
+    self.w = None 
+    self.setGeometry(0, 0, 600, 6000)
+    self.setWindowTitle('Mars Rover')
+    self.total_images=0
+ 
+      
+    self.setStyleSheet("""
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+               
+                font-size: 16px;
+                margin: 4px 2px;
+          
+                border-radius: 5px;
+            }
+            QLabel {
+                font-size: 18px;
+            }
+            QComboBox {
+                font-size: 18px;
+                background-color: #4CAF50;
+            }
+            QDateEdit {
+                font-size: 18px;
+                background-color: #F0F0F0;
+            }
+        """)
+    pushButton = QtWidgets.QPushButton(parent=self, text='Fetch')
+    pushButton.setGeometry(QRect(250, 250, 100, 30))
+    pushButton.clicked.connect(self.fetch_value)
+    pushButton=QtWidgets.QPushButton(parent=self, text='Next')
+    pushButton.setGeometry(QRect(650, 350, 100, 30))
+    pushButton.clicked.connect(self.next_value)
+    pushButton=QtWidgets.QPushButton(parent=self, text='Previous')
+    pushButton.setGeometry(QRect(550, 350, 100, 30))
+    pushButton.clicked.connect(self.previous_value)
+    pushButton=QtWidgets.QPushButton(parent=self, text='Send Email')
+    pushButton.setGeometry(QRect(550, 550, 100, 30))
+    pushButton.clicked.connect(self.show_new_window)
+    label2 = QtWidgets.QLabel(self)
+    label2.setText("Select Camera:")
+    label2.setGeometry(QRect(50, 20, 150, 30))
+    self.comboBox2 = QtWidgets.QComboBox(self)
+    self.comboBox2.setGeometry(QRect(250, 300, 200, 31))
+    self.comboBox2.addItems([" ", "fhaz", "rhaz", "mast", "chemcam", "mahli", "mardi", "navcam"])
+    self.dateEdit = QtWidgets.QDateEdit(parent=self)
+    self.dateEdit.setGeometry(QRect(250, 400, 200, 21))
+    self.dateEdit.setDisplayFormat("yyyy-MM-dd")
+    self.dateEdit.setDate(QtCore.QDate.currentDate())
+    label3 = QtWidgets.QLabel(text="Select Date:", parent=self)
+    label3.setGeometry(QRect(50, 120, 150, 30))
+    self.label = QLabel(self)
+    self.label.setGeometry(QRect(400, 20, 550, 700))
+    self.setGeometry(0, 0, 800, 600)
+    self.setWindowTitle('Mars Rover')
+
+
         # self.label.setStyleSheet("background-color: rgb(255, 255, 255);")
+      
 
        
 
         
-   def fetch_value(self):
+  def fetch_value(self):
     selected_camera = self.comboBox2.currentText()
     selected_date = self.dateEdit.date().toPyDate()
     print(selected_date)
@@ -75,25 +103,25 @@ class MainWindow(QMainWindow):
             f.write(r.content)
             self.pixmap=QPixmap(f'IMAGE/image{self.i}.JPG')
             self.label.setPixmap(self.pixmap)
-   def next_value(self):
+  def next_value(self):
     self.pixmap=QPixmap(f'IMAGE/image{self.i}.JPG')
     self.label.setPixmap(self.pixmap)
     self.i+=1
     self.label.show()
     
-   def previous_value(self):
+  def previous_value(self):
     self.pixmap=QPixmap(f'IMAGE/image{self.i}.JPG')
     # print(self.pixmap)
     self.label.setPixmap(self.pixmap)
     self.i-=1
     self.label.show()
-   def newwindow(self):
+  def newwindow(self):
     super().__init__()
     self.button=QPushButton("Push for window")
     self.button.clicked.connect(self.show_new_window)
     self.setAnimated(self.button)
   
-   def show_new_window(self, checked):
+  def show_new_window(self, checked):
         if self.w is None:
             self.w = AnotherWindow()
         self.w.show()    

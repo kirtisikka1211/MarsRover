@@ -6,14 +6,14 @@ This app fetches image from the Curiosity Rover and displays images, Also you ha
 ##  💫 Installation
 
 - Clone Repository and open terminal in the repository folder
-* Create a virtual environment using python -m venv venv
-* Activate the virtual environment using source venv/bin/activate
-* Install the requirements using pip install -r requirements.txt
-+ Run the application using python marsrover.py or python3 marsrover.py
+* Create a virtual environment using `python -m venv venv`
+* Activate the virtual environment using `source venv/bin/activate`
+* Install the requirements using `pip install -r requirements.txt`
++ Run the application using `python marsrover.py` or `python3 marsrover.py`
 
 
 ## 💫 Usage 
-- Open the application using python marsrover.py or python3 marsrover.py
+- Open the application using `python marsrover.py` or `python3 marsrover.py`
 - You can choose the camera and date, a calender will appear for you to choose from.
 - You can see the image in the application. You can navigate using next and previous button
 - You can share the images to many of your friends  by just one click!  the send email button !. 📨
